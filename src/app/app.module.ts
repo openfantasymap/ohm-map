@@ -4,6 +4,7 @@ import { MnConfiguratorModule } from '@modalnodes/mn-configurator';
 import { MnDockerModule } from '@modalnodes/mn-docker';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { MatomoModule } from 'ngx-matomo';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -29,6 +30,7 @@ import { DateComponent } from './date/date.component';
     MnDockerModule,
     MnConfiguratorModule,
     SharedModule,
+    MatomoModule
   ],
   providers: [],
   bootstrap: [AppComponent]

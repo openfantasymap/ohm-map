@@ -13,6 +13,7 @@ import { NicedatePipe } from '../nicedate.pipe';
 import { timeInterval } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { MatomoTracker } from 'ngx-matomo';
 
 declare const mapboxgl;
 declare const vis;
@@ -63,7 +64,9 @@ export class MapComponent implements OnInit {
     private l: Location,
     private md: MatDialog,
     private ohm: OhmService,
-    private http: HttpClient
+    private http: HttpClient,
+    private matomoTracker: MatomoTracker
+
   ) { }
 
   ngOnInit(): void {
@@ -151,6 +154,7 @@ export class MapComponent implements OnInit {
   changeUrl(ev = null): void{
     const c = this.map.getCenter();
     this.l.go(`/${this.atDate}/${this.map.getZoom()}/${c.lat}/${c.lng}` + (this.rels ? '/' + this.rels : ''));
+    this.matomoTracker.trackPageView(`/${this.atDate}/${this.map.getZoom()}/${c.lat}/${c.lng}` + (this.rels ? '/' + this.rels : ''));
     if (ev) {
       this.map.getSource('ohm').setSourceProperty(() => { });
       this.map.getSource('ohm-boundaries')?.setSourceProperty(() => { });
