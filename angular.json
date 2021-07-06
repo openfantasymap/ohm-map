@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "ohm-map"
+  "defaultProject": "ohm-map",
+  "cli": {
+    "analytics": false
+  }
 }

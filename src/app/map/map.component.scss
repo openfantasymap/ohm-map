@@ -17,8 +17,15 @@
     width: 256px;
     background-color: #3f51b5;
     color: white;
+    a{
+        color:white;
+    }
 }
 
 .info{
     padding: 16px;
+    color:white;
+    a, a:hover, a:visited{
+        color:white;
+    }
 }

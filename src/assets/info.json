@@ -1,3 +1,3 @@
 {
-    "info": "OpenHistoryMap si propone di accorciare questo divario seppur in maniera minima, dando la possibilità a chiunque di consultare ed avere esperienza dei dati archeologici pubblicati."
+    "info": "<a style='color:white' href='https://www.openhistorymap.org' target='_blank'>OpenHistoryMap</a> is an italian non profit association (APS) founded by a team of archaeologists and software developers based in Bologna, Italy. The aim is the creation of a web-GIS platform containing spatial historical and archaeological data. <br><br>OHM is an open source project using open source tools. The code is available on github<br><br>Technology and academia are the main sources of data, as you can see in our <a target='blank' href='https://index.openhistorymap.org'>OHM Data Index</a>, but end users can contribute as well, by sharing their datasets and by exploring the map and the data."
 }
