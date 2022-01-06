@@ -135,7 +135,7 @@ export class MapComponent implements OnInit {
     this.map.on('click', (e) => {
       console.log(e.lngLat);
       this.ohm.drilldown(e.lngLat).subscribe(feats=>{
-        this.ibar.open();
+        //this.ibar.open();
         if(feats.length > 0) {
           this.selectedFeatures = feats;
           console.log(feats[0].properties);

@@ -16,8 +16,8 @@
     <span class="spacer hidesmall"></span>
     <span class="spacer hidesmall"></span>
     <span class="spacer hidesmall"></span>
-    <button mat-button mat-icon-button (click)="rbar.toggle()" class="hidesmall"><mat-icon>menu</mat-icon></button>
-    <button mat-button mat-icon-button (click)="ibar.toggle()" class="hidesmall"><mat-icon>location_on</mat-icon></button>
+    <button disabled mat-button mat-icon-button (click)="rbar.toggle()" class="hidesmall"><mat-icon>menu</mat-icon></button>
+    <button disabled mat-button mat-icon-button (click)="ibar.toggle()" class="hidesmall"><mat-icon>location_on</mat-icon></button>
 
 </mat-toolbar>
 
@@ -35,7 +35,13 @@
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav class="sidebar" mode="over" #ibar position="end">
-        {{selectedFeatures|json}}
+        <mat-toolbar>
+            <h1>What is here</h1>
+        </mat-toolbar>
+        
+        <mat-list *ngFor="let event of selectedFeatures">
+            <a mat-list-item (click)="goTimeSpace(event.ohm_from, event.geom)">{{event.properties.name}}</a>
+        </mat-list>
     </mat-sidenav>
     <mat-sidenav class="sidebar" mode="over" #rbar position="end">
         <mat-toolbar color="primary">
