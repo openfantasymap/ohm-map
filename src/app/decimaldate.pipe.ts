@@ -58,5 +58,4 @@ export class DecimaldatePipe implements PipeTransform {
     ret.setMilliseconds(rest);
     return ret;
   }
-
 }

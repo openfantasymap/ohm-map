@@ -1,19 +1,17 @@
 import { OhmService } from './../ohm.service';
 import { DateComponent } from './../date/date.component';
 import { DecimaldatePipe } from './../decimaldate.pipe';
-import { Component, OnInit, Input, isDevMode } from '@angular/core';
+import { Component, OnInit, Input, isDevMode, ViewChild } from '@angular/core';
 
 import { MnDockerService } from '@modalnodes/mn-docker';
 import { HttpClient } from '@angular/common/http';
 
-import env from '../../assets/env.json';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { NicedatePipe } from '../nicedate.pipe';
-import { timeInterval } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { MatomoTracker } from 'ngx-matomo';
+import { MatSidenav } from '@angular/material/sidenav';
 
 declare const mapboxgl;
 declare const vis;
@@ -57,7 +55,9 @@ export class MapComponent implements OnInit {
 
   infoData: any;
 
+  @ViewChild('ibar') ibar: MatSidenav;
 
+  selectedFeatures = [];
   constructor(
     private ds: MnDockerService,
     private ar: ActivatedRoute,
@@ -124,6 +124,29 @@ export class MapComponent implements OnInit {
     this.map.on('moveend', () => {
       this.changeUrl();
     });
+    this.map.on('mouseenter', () => {
+      this.map.getCanvas().style.cursor = 'pointer';
+      });
+       
+      // Change it back to a pointer when it leaves.
+      this.map.on('mouseleave', () => {
+        this.map.getCanvas().style.cursor = '';
+      });
+    this.map.on('click', (e) => {
+      console.log(e.lngLat);
+      this.ohm.drilldown(e.lngLat).subscribe(feats=>{
+        this.ibar.open();
+        if(feats.length > 0) {
+          this.selectedFeatures = feats;
+          console.log(feats[0].properties);
+          new mapboxgl.Popup()
+            .setLngLat(e.lngLat)
+            .addTo(this.map);
+        }
+
+      })
+      });
+      
 
     const container = document.getElementById('visualization');
 
@@ -166,7 +189,9 @@ export class MapComponent implements OnInit {
 
   changeStyle(style): void  {
     this.style = style;
-    this.map.setStyle(style);
+    try{
+      this.map.setStyle(style);
+    } catch(ex) { }
   }
 
   toDateFloat(date: Date): number{

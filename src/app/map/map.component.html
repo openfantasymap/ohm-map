@@ -17,6 +17,7 @@
     <span class="spacer hidesmall"></span>
     <span class="spacer hidesmall"></span>
     <button mat-button mat-icon-button (click)="rbar.toggle()" class="hidesmall"><mat-icon>menu</mat-icon></button>
+    <button mat-button mat-icon-button (click)="ibar.toggle()" class="hidesmall"><mat-icon>location_on</mat-icon></button>
 
 </mat-toolbar>
 
@@ -32,6 +33,9 @@
             <a target="_blank" href="https://www.openhistorymap.org/about/" mat-list-item>About OHM</a>
             <a target="_blank" href="https://www.openhistorymap.org/help/" mat-list-item>How to help/donate to OHM</a>
         </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav class="sidebar" mode="over" #ibar position="end">
+        {{selectedFeatures|json}}
     </mat-sidenav>
     <mat-sidenav class="sidebar" mode="over" #rbar position="end">
         <mat-toolbar color="primary">
