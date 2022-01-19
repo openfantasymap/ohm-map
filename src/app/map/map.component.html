@@ -16,6 +16,7 @@
     <span class="spacer hidesmall"></span>
     <span class="spacer hidesmall"></span>
     <span class="spacer hidesmall"></span>
+    <button mat-button mat-icon-button (click)="copy_url()" class="hidesmall"><mat-icon>share</mat-icon></button>
     <button disabled mat-button mat-icon-button (click)="rbar.toggle()" class="hidesmall"><mat-icon>menu</mat-icon></button>
     <button disabled mat-button mat-icon-button (click)="ibar.toggle()" class="hidesmall"><mat-icon>location_on</mat-icon></button>
 
@@ -52,7 +53,13 @@
             <a mat-list-item (click)="goTimeSpace(event.ohm_from, event.geom)">{{event.properties.name}}</a>
         </mat-list>
     </mat-sidenav>
-    <mat-sidenav-content>
+    <mat-sidenav class="sidebar" mode="over" #sharebar position="end">
+        <mat-toolbar color="primary">
+            <h1>Sharing</h1>
+        </mat-toolbar>
+
+    </mat-sidenav>
+    <mat-sidenav-content #screen>
 
         <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="setSpeed(4000)">Slow</button>

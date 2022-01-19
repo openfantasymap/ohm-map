@@ -24,6 +24,7 @@
     "@modalnodes/mn-configurator": "0.0.4",
     "@modalnodes/mn-docker": "0.0.3",
     "@modalnodes/mn-registry": "0.0.3",
+    "ngx-capture": "^0.12.1",
     "ngx-matomo": "^0.1.4",
     "ol": "^6.4.3",
     "rxjs": "~6.5.5",

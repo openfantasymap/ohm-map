@@ -31,4 +31,8 @@ export class OhmService {
     console.log('getting the elements around the selected point')
     return of([]);
   }
+
+  su(url: string, image:string = null): Observable<string>{
+    return this.http.post<string>('https://su.openhistorymap.org/?url='+url, image);
+  }
 }

@@ -13,6 +13,7 @@ import { StyleSelectorComponent } from './style-selector/style-selector.componen
 import { DecimaldatePipe } from './decimaldate.pipe';
 import { NicedatePipe } from './nicedate.pipe';
 import { DateComponent } from './date/date.component';
+import {ClipboardModule} from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { DateComponent } from './date/date.component';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    ClipboardModule,
     MnDockerModule,
     MnConfiguratorModule,
     SharedModule,

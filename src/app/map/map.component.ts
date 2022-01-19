@@ -12,6 +12,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { MatomoTracker } from 'ngx-matomo';
 import { MatSidenav } from '@angular/material/sidenav';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgxCaptureService } from 'ngx-capture';
 
 declare const mapboxgl;
 declare const vis;
@@ -56,6 +59,7 @@ export class MapComponent implements OnInit {
   infoData: any;
 
   @ViewChild('ibar') ibar: MatSidenav;
+  @ViewChild('screen') screen: any;
 
   selectedFeatures = [];
   constructor(
@@ -65,8 +69,10 @@ export class MapComponent implements OnInit {
     private md: MatDialog,
     private ohm: OhmService,
     private http: HttpClient,
-    private matomoTracker: MatomoTracker
-
+    private matomoTracker: MatomoTracker,
+    private _snackBar: MatSnackBar,
+    private clipboard: Clipboard,
+    private capture: NgxCaptureService
   ) { }
 
   ngOnInit(): void {
@@ -95,6 +101,7 @@ export class MapComponent implements OnInit {
       style: this.style, // stylesheet location
       center: this.start.center, // starting position [lng, lat]
       zoom: this.start.zoom, // starting zoom
+      preserveDrawingBuffer: true,
       transformRequest: (url, resourceType) => {
         let nurl = url;
         if (isDevMode()) {
@@ -172,6 +179,17 @@ export class MapComponent implements OnInit {
 
     this.timeline.on('rangechanged', (properties) => {
     });
+  }
+
+  copy_url(){
+    this.capture.getImage(this.screen.elementRef.nativeElement, true).subscribe(img=>{
+      this.ohm.su(window.location.href, img).subscribe(data =>{
+        this.clipboard.copy(data);
+        this._snackBar.open('Address ready to share','Close', {
+          duration: 1000
+        });
+      });
+    })
   }
 
   changeUrl(ev = null): void{
