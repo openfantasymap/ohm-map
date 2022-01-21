@@ -59,7 +59,10 @@ export class MapComponent implements OnInit {
   infoData: any;
 
   @ViewChild('ibar') ibar: MatSidenav;
+  @ViewChild('sharebar') sharebar: MatSidenav;
   @ViewChild('screen') screen: any;
+
+  share_link: string;
 
   selectedFeatures = [];
   constructor(
@@ -185,6 +188,8 @@ export class MapComponent implements OnInit {
     this.capture.getImage(this.screen.elementRef.nativeElement, true).subscribe(img=>{
       this.ohm.su(window.location.href, img).subscribe(data =>{
         this.clipboard.copy(data);
+        this.share_link = data;
+        this.sharebar.open();
         this._snackBar.open('Address ready to share','Close', {
           duration: 1000
         });
@@ -236,7 +241,7 @@ export class MapComponent implements OnInit {
         this.atDate = parseFloat(this.atDate.toString()) + delta;
         this.timeline.setCustomTime(this.toFloatDate(this.atDate), 'atTime');
         this.changeUrl(this.atDate);
-      }, this.speed);
+      }, 4000);
     } else {
       clearInterval(this.startstopInterval);
     }

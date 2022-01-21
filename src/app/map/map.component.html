@@ -1,5 +1,5 @@
 <mat-toolbar color="primary">
-    <button mat-button mat-icon-button (click)="lbar.toggle()"><mat-icon>info</mat-icon></button>
+    <button mat-button mat-icon-button (click)="lbar.toggle()"><mat-icon>menu</mat-icon></button>
     <h1>OpenHistoryMap</h1>
     <span class="spacer"></span>
     <span class="spacer"></span>
@@ -8,9 +8,9 @@
     <ohm-style-selector (styleChange)="changeStyle($event)"></ohm-style-selector>
     <button mat-button mat-icon-button class="hidesmall" (click)="info()"><mat-icon>help</mat-icon></button>
     <span class="spacer"></span>
-    <button mat-button class="hidesmall" (click)="selectDate()">{{atDate|decimaldate|date:'d/M/y G - hh:mm:ss'|nicedate}}</button>
-    <button mat-button class="hidesmall" mat-icon-button (click)="startstop()"><mat-icon>{{startstopicon}}</mat-icon></button>
-    <button mat-button class="hidesmall" mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>speed</mat-icon></button>
+    <button mat-button class="hidesmall">{{atDate|decimaldate|date:'d/M/y G - hh:mm:ss'|nicedate}}</button>
+    <button mat-button class="hidesmall" disabled mat-icon-button (click)="startstop()"><mat-icon>{{startstopicon}}</mat-icon></button>
+    <button mat-button class="hidesmall" disabled mat-icon-button [matMenuTriggerFor]="menu"><mat-icon>speed</mat-icon></button>
 
     <span class="spacer hidesmall"></span>
     <span class="spacer hidesmall"></span>
@@ -18,6 +18,7 @@
     <span class="spacer hidesmall"></span>
     <button mat-button mat-icon-button (click)="copy_url()" class="hidesmall"><mat-icon>share</mat-icon></button>
     <button disabled mat-button mat-icon-button (click)="rbar.toggle()" class="hidesmall"><mat-icon>menu</mat-icon></button>
+    <button disabled mat-button mat-icon-button (click)="pbar.toggle()" class="hidesmall"><mat-icon>person</mat-icon></button>
     <button disabled mat-button mat-icon-button (click)="ibar.toggle()" class="hidesmall"><mat-icon>location_on</mat-icon></button>
 
 </mat-toolbar>
@@ -53,17 +54,35 @@
             <a mat-list-item (click)="goTimeSpace(event.ohm_from, event.geom)">{{event.properties.name}}</a>
         </mat-list>
     </mat-sidenav>
+    <mat-sidenav class="sidebar" mode="over" #pbar position="end">
+        <mat-toolbar color="primary">
+            <h1>Ephemeral</h1>
+        </mat-toolbar>
+
+        <mat-list *ngFor="let event of (events|async)">
+            <a mat-list-item (click)="goTimeSpace(event.ohm_from, event.geom)">{{event.properties.name}}</a>
+        </mat-list>
+    </mat-sidenav>
     <mat-sidenav class="sidebar" mode="over" #sharebar position="end">
         <mat-toolbar color="primary">
             <h1>Sharing</h1>
+            <span class="spacer"></span>
+            <button mat-button mat-icon-button (click)="sharebar.close()" class="hidesmall"><mat-icon>close</mat-icon></button>
         </mat-toolbar>
+
+        <mat-list>
+            <a share="https://www.facebook.com/sharer/sharer.php?u={{share_link}}" mat-list-item><mat-icon>facebook</mat-icon> Share on Facebook</a>
+            <a share="" mat-list-item><mat-icon>twitter</mat-icon> Share on Twitter</a>
+            <a share="" mat-list-item><mat-icon></mat-icon> Share on Linkedin</a>
+            <a share="" mat-list-item><mat-icon>class</mat-icon> Share on Classroom</a>
+        </mat-list>
 
     </mat-sidenav>
     <mat-sidenav-content #screen>
 
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="setSpeed(4000)">Slow</button>
-            <button mat-menu-item (click)="setSpeed(2000)">Medium</button>
+            <button mat-menu-item (click)="setSpeed(5)">Slow</button>
+            <button mat-menu-item (click)="setSpeed(50)">Medium</button>
             <button mat-menu-item (click)="setSpeed(500)">High</button>
         </mat-menu>
         <div class="row">
