@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 import { OhmService } from './ohm.service';
 
 @Injectable({
@@ -15,7 +16,14 @@ export class OfmService extends OhmService{
   }
 
   getTimelines(){
-    return this.http.get('//static.fantasymaps.org/timelines.json');
+    return this.http.get('/assets/env.json').pipe(
+      concatMap((data:any)=>{
+        var append = "";
+        if (Object.keys(data).indexOf('TAG') >= 0){
+          append = "?tag="+data.TAG;
+        }
+        return this.http.get('//static.fantasymaps.org/timelines.json'+append);
+      }));
   }
 
   getEvents(name: string, date: any, amount?: number): Observable<any> {
