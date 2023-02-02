@@ -97,6 +97,7 @@ ngAfterContentInit(): void {
      zoom: this.start.zoom, // starting zoom
      projection: 'equirectangular',
      maxPitch: 85,
+     minPitch: 0,
      attributionControl:false,
      preserveDrawingBuffer: true,
      transformRequest: (url, resourceType) => {
