@@ -187,11 +187,9 @@ export class MapComponent implements OnInit, AfterContentInit {
           nurl = nurl.replace('https://b.tiles.fantasymaps.org/' + this.tl, this.ts + this.tl);
           nurl = nurl.replace('https://c.tiles.fantasymaps.org/' + this.tl, this.ts + this.tl);
         }
-        if (resourceType === 'Tile' && url.indexOf('openhistory') >= 0) {
-          return {
-            url: nurl.replace('{atDate}', this.atDate.toString())
-          };
-        }
+        return {
+          url: nurl.replace('{atDate}', this.atDate.toString()).replace('%7BatDate%7D', this.atDate.toString())
+        };
       }
 
     });
