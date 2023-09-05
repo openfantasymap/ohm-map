@@ -15,13 +15,23 @@
         
         <mat-nav-list>
             <a mat-list-item href="..">All fantasy worlds</a>
-            <div mat-subheader>Sources</div>
-            <mat-list-item *ngFor="let r of ofm_meta.sources">
-                <a matListItemLine target="_blank" href="{{r.url}}">{{r.label}}</a>
-                <div matListItemLine>{{r.attribution}}</div>
-            </mat-list-item>
-            <h1 mat-subheader>Related Maps</h1>
-            <a *ngFor="let r of ofm_meta.relateds" mat-list-item href="{{r.url}}">{{r.title}}</a>
+            <div *ngIf="ofm_meta">
+                <div *ngIf="ofm_meta.type === 'starbase'">
+                    <div mat-subheader>Decks</div>
+                    <mat-list>
+                        <mat-list-item *ngFor="let o of ofm_meta.decks|keyvalue" (click)="setDeck(o.key)">
+                            {{o.value.name}}
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <div mat-subheader>Sources</div>
+                <mat-list-item *ngFor="let r of ofm_meta.sources">
+                    <a matListItemLine target="_blank" href="{{r.url}}">{{r.label}}</a>
+                    <div matListItemLine>{{r.attribution}}</div>
+                </mat-list-item>
+                <h1 mat-subheader>Related Maps</h1>
+                <a *ngFor="let r of ofm_meta.relateds" mat-list-item href="{{r.url}}">{{r.title}}</a>
+            </div>
         </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav class="sidebar" mode="over" #rbar position="end">
@@ -57,7 +67,7 @@
         </mat-menu>
         <div class="row">
             <div id="ohm_map"></div>
-            <div id="ofm_attribution" [innerHTML]="ofm_meta.copyright"></div>
+            <div *ngIf="ofm_meta" id="ofm_attribution" [innerHTML]="ofm_meta.copyright"></div>
         </div>
         
         <div id="timebar">

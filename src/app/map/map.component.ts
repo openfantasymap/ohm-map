@@ -16,7 +16,8 @@ import {
   Input,
   isDevMode,
   AfterContentInit,
-  ViewChild
+  ViewChild,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -69,7 +70,7 @@ declare const turf;
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit, AfterContentInit {
+export class MapComponent implements OnInit, AfterContentInit, OnDestroy {
   map;
   ts;
 
@@ -166,14 +167,24 @@ export class MapComponent implements OnInit, AfterContentInit {
     private capture: NgxCaptureService
   ) {}
 
+  ngOnDestroy(): void {
+    this.currentDeck = "";
+  }
+
+  currentDeck="d1";
+
+  setDeck(deck){
+    this.currentDeck=deck;
+    this.changeUrl('deck');
+  }
+
   ngAfterContentInit(): void {
-
-
     this.map = new maplibregl.Map({
       container: 'ohm_map',
       style: 'https://static.fantasymaps.org/' + this.ar.snapshot.params.timeline + '/map.json', // stylesheet location
       center: this.start.center, // starting position [lng, lat]
       zoom: this.start.zoom, // starting zoom
+      maxZoom:25,
       projection: 'equirectangular',
       maxPitch: 85,
       minPitch: 0,
@@ -188,7 +199,7 @@ export class MapComponent implements OnInit, AfterContentInit {
           nurl = nurl.replace('https://c.tiles.fantasymaps.org/' + this.tl, this.ts + this.tl);
         }
         return {
-          url: nurl.replace('{atDate}', this.atDate.toString()).replace('%7BatDate%7D', this.atDate.toString())
+          url: nurl.replace('{atDate}', this.atDate.toString()).replace('%7BatDate%7D', this.atDate.toString()).replace('{deck}', this.currentDeck).replace('%7Bdeck%7D', this.currentDeck)
         };
       }
 
@@ -199,7 +210,7 @@ export class MapComponent implements OnInit, AfterContentInit {
     this.map.on('load', () => {
       this.showRels();
       this.map.on('zoomend', () => {
-        if (this.map.getZoom() == 22 && this.ofm_meta.relatedLayers) {
+        if (this.map.getZoom() >= 22 && this.ofm_meta.relatedLayers) {
           const features = this.map.queryRenderedFeatures({
             layers: this.ofm_meta ?.relatedLayers
           });
@@ -365,6 +376,25 @@ export class MapComponent implements OnInit, AfterContentInit {
               console.log(ex);
             }
           })
+        }
+      }
+
+      if(this.ofm_meta.type === "starbase"){
+        for (let tm of [{"source":"base"}, {"source": "walls"}, {"source": "areas"}]) {
+
+          const s = this.map.getSource(tm.source);
+          console.log(s);
+          
+          if (s.type === 'geojson') {
+            this.http.get(s._options.data.replace('{deck}', this.currentDeck)).subscribe(data => {
+              try {
+                s.setData(data);
+              } catch (ex) {
+                console.log(ex);
+              }
+            })
+          }        
+          this.map.style.getSource('base').load();
         }
       }
     }
