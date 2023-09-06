@@ -12,7 +12,10 @@ export class TimelinesComponent implements OnInit {
 infoData;
 events;
 
-timelines;
+timelines: any[];
+seen_timelines: any[];
+tags;
+selected_tags;
 
   constructor(
     private ofm: OfmService,
@@ -29,7 +32,23 @@ timelines;
     })
     this.ofm.getTimelines().subscribe((data:any) => {
       this.timelines = data;
+      this.seen_timelines = data;
     })
+
+    this.ofm.getTags().subscribe((data:any)=>{
+      this.tags = data.map(x=>{
+        return {label:x, selected:true}
+      });
+      this.selected_tags = data;
+    })
+  }
+
+  filter(ev, tag){
+    console.log(tag);
+    this.selected_tags = [tag];
+    this.tags.map(x=>x.selected=false);
+    this.tags.filter(x=>x.label===tag)[0].selected=true;
+    this.seen_timelines = this.timelines.filter(x=>x.tags?.indexOf(tag) >= 0);
   }
 
 }

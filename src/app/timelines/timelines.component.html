@@ -18,9 +18,14 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <div class="row">
+            <mat-chip-list [multiple]="true" [selectable]="true" >
+                <mat-chip [selected]="t.selected" *ngFor="let t of tags" (click)="filter($event,t.label)">{{t.label}}</mat-chip>   
+            </mat-chip-list>
+        </div>
+        <div class="row">
             <div id="ohm_timelines">
                 <mat-grid-list cols="8" rowHeight="1:1">
-                    <mat-grid-tile target="_blank" *ngFor="let tl of timelines" [style.background]="tl.bg" [style.color]="tl.color" [style.background-image]="tl.bgimg" [colspan]="tl.size" [rowspan]="tl.size" [routerLink]="[tl.url, tl.date, tl.base.zoom, tl.base.lat, tl.base.lng]">{{tl.name}}</mat-grid-tile>
+                    <mat-grid-tile target="_blank" *ngFor="let tl of seen_timelines" [style.background]="tl.bg" [style.color]="tl.color" [style.background-image]="tl.bgimg" [colspan]="tl.size" [rowspan]="tl.size" [routerLink]="[tl.url, tl.date, tl.base.zoom, tl.base.lat, tl.base.lng]">{{tl.name}}</mat-grid-tile>
                 </mat-grid-list>
             </div>
         </div>
