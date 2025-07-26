@@ -74,7 +74,7 @@ export class MapComponent implements OnInit, AfterContentInit, OnDestroy {
   map;
   ts;
 
-  layers;
+  layers = {};
   startstopicons = {
     stop: 'play_arrow',
     play: 'stop'
@@ -165,7 +165,7 @@ export class MapComponent implements OnInit, AfterContentInit, OnDestroy {
     private _snackBar: MatSnackBar,
     private clipboard: Clipboard,
     private capture: NgxCaptureService
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.currentDeck = "";
